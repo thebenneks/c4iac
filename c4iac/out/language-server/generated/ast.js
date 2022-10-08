@@ -98,7 +98,7 @@ class C4IacAstReflection {
                 return exports.SoftwareSystem;
             }
             case 'West:eastingress': {
-                return exports.East;
+                return exports.Container;
             }
             default: {
                 throw new Error(`${referenceId} is not a valid reference id.`);

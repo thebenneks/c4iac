@@ -7,6 +7,8 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
 import { AstNode, AstReflection, Reference, ReferenceInfo, isAstNode, TypeMetaData } from 'langium';
 
+export type QualifiedName = string;
+
 export type RelationType = North | South | West;
 
 export const RelationType = 'RelationType';
@@ -133,7 +135,7 @@ export function isSouth(item: unknown): item is South {
 
 export interface West extends AstNode {
     readonly $container: RelationShip;
-    eastingress: Reference<East>
+    eastingress: Reference<Container>
     name: string
 }
 
@@ -184,7 +186,7 @@ export class C4IacAstReflection implements AstReflection {
                 return SoftwareSystem;
             }
             case 'West:eastingress': {
-                return East;
+                return Container;
             }
             default: {
                 throw new Error(`${referenceId} is not a valid reference id.`);

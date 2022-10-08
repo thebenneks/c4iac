@@ -730,7 +730,7 @@ export const C4IacGrammar = (): Grammar => loadedC4IacGrammar ?? (loadedC4IacGra
             "terminal": {
               "$type": "CrossReference",
               "type": {
-                "$refText": "East"
+                "$refText": "Container"
               },
               "terminal": {
                 "$type": "RuleCall",
@@ -783,6 +783,46 @@ export const C4IacGrammar = (): Grammar => loadedC4IacGrammar ?? (loadedC4IacGra
           {
             "$type": "Keyword",
             "value": "!"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "QualifiedName",
+      "dataType": "string",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$refText": "ID"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Keyword",
+                "value": "."
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$refText": "ID"
+                },
+                "arguments": []
+              }
+            ],
+            "cardinality": "*"
           }
         ]
       },

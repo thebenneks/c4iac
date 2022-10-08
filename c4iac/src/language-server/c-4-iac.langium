@@ -57,13 +57,17 @@ South:
     ;
 
 West:
-    'west' name=ID 'to' eastingress=[East:ID]
+    'west' name=ID 'to' eastingress=[Container:ID]
     ;
 
 
 
 Greeting:
     'Hello' person=[Person:ID] '!';
+
+
+QualifiedName returns string:
+    ID ('.' ID)*;
 
 
 terminal Location: 'internal' | 'external';
