@@ -1,0 +1,12 @@
+{
+    "projectName": "C4Iac",
+    "languages": [{
+        "id": "c-4-iac",
+        "grammar": "src/language-server/c-4-iac.langium",
+        "fileExtensions": [".c4iac"],
+        "textMate": {
+            "out": "syntaxes/c-4-iac.tmLanguage.json"
+        }
+    }],
+    "out": "src/language-server/generated"
+}

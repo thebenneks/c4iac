@@ -1,0 +1,57 @@
+{
+  "name": "c-4-iac",
+  "scopeName": "source.c-4-iac",
+  "fileTypes": [
+    ".c4iac"
+  ],
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "name": "keyword.control.c-4-iac",
+      "match": "\\b(Hello|person)\\b"
+    },
+    {
+      "name": "string.quoted.double.c-4-iac",
+      "begin": "\"",
+      "end": "\""
+    },
+    {
+      "name": "string.quoted.single.c-4-iac",
+      "begin": "'",
+      "end": "'"
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.block.c-4-iac",
+          "begin": "/\\*",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.c-4-iac"
+            }
+          },
+          "end": "\\*/",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.c-4-iac"
+            }
+          }
+        },
+        {
+          "begin": "//",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.whitespace.comment.leading.c-4-iac"
+            }
+          },
+          "end": "(?=$)",
+          "name": "comment.line.c-4-iac"
+        }
+      ]
+    }
+  }
+}
