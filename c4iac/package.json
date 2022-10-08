@@ -1,0 +1,72 @@
+{
+    "name": "c4iac",
+    "displayName": "c4iac",
+    "description": "Please enter a brief description here",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.56.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [
+            {
+                "id": "c-4-iac",
+                "aliases": [
+                    "c4iac",
+                    "c-4-iac"
+                ],
+                "extensions": [
+                    ".c4iac"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "c-4-iac",
+                "scopeName": "source.c-4-iac",
+                "path": "./syntaxes/c-4-iac.tmLanguage.json"
+            }
+        ]
+    },
+    "activationEvents": [
+        "onLanguage:c-4-iac"
+    ],
+    "files": [
+        "bin",
+        "out",
+        "src"
+    ],
+    "bin": {
+        "c-4-iac-cli": "./bin/cli"
+    },
+    "main": "./out/extension.js",
+    "scripts": {
+        "vscode:prepublish": "npm run build && npm run lint",
+        "build": "tsc -b tsconfig.json",
+        "watch": "tsc -b tsconfig.json --watch",
+        "lint": "eslint src --ext ts",
+        "langium:generate": "langium generate",
+        "langium:watch": "langium generate --watch"
+    },
+    "dependencies": {
+        "chevrotain": "^9.1.0",
+        "chalk": "^4.1.2",
+        "commander": "^8.0.0",
+        "langium": "^0.5.0",
+        "vscode-languageclient": "^8.0.2",
+        "vscode-languageserver": "^8.0.2",
+        "vscode-uri": "^3.0.2"
+    },
+    "devDependencies": {
+        "@types/node": "^14.17.3",
+        "@types/vscode": "^1.56.0",
+        "@typescript-eslint/eslint-plugin": "^5.28.0",
+        "@typescript-eslint/parser": "^5.28.0",
+        "eslint": "^8.17.0",
+        "langium-cli": "^0.5.0",
+        "typescript": "^4.7.4"
+    }
+}
