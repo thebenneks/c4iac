@@ -10,7 +10,7 @@
     },
     {
       "name": "keyword.control.c-4-iac",
-      "match": "\\b(container|description|Hello|location|person|softwaresystem|technology)\\b"
+      "match": "\\b(container|description|east|from|Hello|location|mcast|north|person|port|protocol|relation|softwaresystem|south|tcp|technology|to|udp|version|west)\\b"
     },
     {
       "name": "string.quoted.double.c-4-iac",

@@ -7,17 +7,40 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
 import { AstNode, AstReflection, Reference, ReferenceInfo, isAstNode, TypeMetaData } from 'langium';
 
+export type RelationType = North | South | West;
+
+export const RelationType = 'RelationType';
+
+export function isRelationType(item: unknown): item is RelationType {
+    return reflection.isInstance(item, RelationType);
+}
+
 export interface Container extends AstNode {
     readonly $container: SoftwareSystem;
     description: string
+    easts: Array<East>
     name: string
+    relationships: Array<RelationShip>
     technology: string
+    version: string
 }
 
 export const Container = 'Container';
 
 export function isContainer(item: unknown): item is Container {
     return reflection.isInstance(item, Container);
+}
+
+export interface East extends AstNode {
+    readonly $container: Container;
+    name: string
+    port: number
+}
+
+export const East = 'East';
+
+export function isEast(item: unknown): item is East {
+    return reflection.isInstance(item, East);
 }
 
 export interface Greeting extends AstNode {
@@ -33,7 +56,6 @@ export function isGreeting(item: unknown): item is Greeting {
 
 export interface Model extends AstNode {
     greetings: Array<Greeting>
-    persons: Array<Person>
 }
 
 export const Model = 'Model';
@@ -42,8 +64,21 @@ export function isModel(item: unknown): item is Model {
     return reflection.isInstance(item, Model);
 }
 
+export interface North extends AstNode {
+    readonly $container: RelationShip;
+    name: string
+    person: Reference<Person>
+    port: number
+}
+
+export const North = 'North';
+
+export function isNorth(item: unknown): item is North {
+    return reflection.isInstance(item, North);
+}
+
 export interface Person extends AstNode {
-    readonly $container: Model;
+    readonly $container: SoftwareSystem;
     description: string
     location: string
     name: string
@@ -55,11 +90,26 @@ export function isPerson(item: unknown): item is Person {
     return reflection.isInstance(item, Person);
 }
 
-export interface SoftwareSystem extends Model {
+export interface RelationShip extends AstNode {
+    readonly $container: Container;
+    description: string
+    name: string
+    relationtype: RelationType
+}
+
+export const RelationShip = 'RelationShip';
+
+export function isRelationShip(item: unknown): item is RelationShip {
+    return reflection.isInstance(item, RelationShip);
+}
+
+export interface SoftwareSystem extends AstNode {
     containers: Array<Container>
     description: string
     location: string
     name: string
+    persons: Array<Person>
+    version: string
 }
 
 export const SoftwareSystem = 'SoftwareSystem';
@@ -68,12 +118,37 @@ export function isSoftwareSystem(item: unknown): item is SoftwareSystem {
     return reflection.isInstance(item, SoftwareSystem);
 }
 
-export type C4IacAstType = 'Container' | 'Greeting' | 'Model' | 'Person' | 'SoftwareSystem';
+export interface South extends AstNode {
+    readonly $container: RelationShip;
+    name: string
+    port: number
+    to: Reference<SoftwareSystem>
+}
+
+export const South = 'South';
+
+export function isSouth(item: unknown): item is South {
+    return reflection.isInstance(item, South);
+}
+
+export interface West extends AstNode {
+    readonly $container: RelationShip;
+    eastingress: Reference<East>
+    name: string
+}
+
+export const West = 'West';
+
+export function isWest(item: unknown): item is West {
+    return reflection.isInstance(item, West);
+}
+
+export type C4IacAstType = 'Container' | 'East' | 'Greeting' | 'Model' | 'North' | 'Person' | 'RelationShip' | 'RelationType' | 'SoftwareSystem' | 'South' | 'West';
 
 export class C4IacAstReflection implements AstReflection {
 
     getAllTypes(): string[] {
-        return ['Container', 'Greeting', 'Model', 'Person', 'SoftwareSystem'];
+        return ['Container', 'East', 'Greeting', 'Model', 'North', 'Person', 'RelationShip', 'RelationType', 'SoftwareSystem', 'South', 'West'];
     }
 
     isInstance(node: unknown, type: string): boolean {
@@ -85,8 +160,10 @@ export class C4IacAstReflection implements AstReflection {
             return true;
         }
         switch (subtype) {
-            case SoftwareSystem: {
-                return this.isSubtype(Model, supertype);
+            case North:
+            case South:
+            case West: {
+                return this.isSubtype(RelationType, supertype);
             }
             default: {
                 return false;
@@ -100,6 +177,15 @@ export class C4IacAstReflection implements AstReflection {
             case 'Greeting:person': {
                 return Person;
             }
+            case 'North:person': {
+                return Person;
+            }
+            case 'South:to': {
+                return SoftwareSystem;
+            }
+            case 'West:eastingress': {
+                return East;
+            }
             default: {
                 throw new Error(`${referenceId} is not a valid reference id.`);
             }
@@ -108,12 +194,20 @@ export class C4IacAstReflection implements AstReflection {
 
     getTypeMetaData(type: string): TypeMetaData {
         switch (type) {
+            case 'Container': {
+                return {
+                    name: 'Container',
+                    mandatory: [
+                        { name: 'easts', type: 'array' },
+                        { name: 'relationships', type: 'array' }
+                    ]
+                };
+            }
             case 'Model': {
                 return {
                     name: 'Model',
                     mandatory: [
-                        { name: 'greetings', type: 'array' },
-                        { name: 'persons', type: 'array' }
+                        { name: 'greetings', type: 'array' }
                     ]
                 };
             }
@@ -122,7 +216,6 @@ export class C4IacAstReflection implements AstReflection {
                     name: 'SoftwareSystem',
                     mandatory: [
                         { name: 'containers', type: 'array' },
-                        { name: 'greetings', type: 'array' },
                         { name: 'persons', type: 'array' }
                     ]
                 };

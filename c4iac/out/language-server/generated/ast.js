@@ -4,15 +4,25 @@
  * DO NOT EDIT MANUALLY!
  ******************************************************************************/
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.reflection = exports.C4IacAstReflection = exports.isSoftwareSystem = exports.SoftwareSystem = exports.isPerson = exports.Person = exports.isModel = exports.Model = exports.isGreeting = exports.Greeting = exports.isContainer = exports.Container = void 0;
+exports.reflection = exports.C4IacAstReflection = exports.isWest = exports.West = exports.isSouth = exports.South = exports.isSoftwareSystem = exports.SoftwareSystem = exports.isRelationShip = exports.RelationShip = exports.isPerson = exports.Person = exports.isNorth = exports.North = exports.isModel = exports.Model = exports.isGreeting = exports.Greeting = exports.isEast = exports.East = exports.isContainer = exports.Container = exports.isRelationType = exports.RelationType = void 0;
 /* eslint-disable @typescript-eslint/array-type */
 /* eslint-disable @typescript-eslint/no-empty-interface */
 const langium_1 = require("langium");
+exports.RelationType = 'RelationType';
+function isRelationType(item) {
+    return exports.reflection.isInstance(item, exports.RelationType);
+}
+exports.isRelationType = isRelationType;
 exports.Container = 'Container';
 function isContainer(item) {
     return exports.reflection.isInstance(item, exports.Container);
 }
 exports.isContainer = isContainer;
+exports.East = 'East';
+function isEast(item) {
+    return exports.reflection.isInstance(item, exports.East);
+}
+exports.isEast = isEast;
 exports.Greeting = 'Greeting';
 function isGreeting(item) {
     return exports.reflection.isInstance(item, exports.Greeting);
@@ -23,19 +33,39 @@ function isModel(item) {
     return exports.reflection.isInstance(item, exports.Model);
 }
 exports.isModel = isModel;
+exports.North = 'North';
+function isNorth(item) {
+    return exports.reflection.isInstance(item, exports.North);
+}
+exports.isNorth = isNorth;
 exports.Person = 'Person';
 function isPerson(item) {
     return exports.reflection.isInstance(item, exports.Person);
 }
 exports.isPerson = isPerson;
+exports.RelationShip = 'RelationShip';
+function isRelationShip(item) {
+    return exports.reflection.isInstance(item, exports.RelationShip);
+}
+exports.isRelationShip = isRelationShip;
 exports.SoftwareSystem = 'SoftwareSystem';
 function isSoftwareSystem(item) {
     return exports.reflection.isInstance(item, exports.SoftwareSystem);
 }
 exports.isSoftwareSystem = isSoftwareSystem;
+exports.South = 'South';
+function isSouth(item) {
+    return exports.reflection.isInstance(item, exports.South);
+}
+exports.isSouth = isSouth;
+exports.West = 'West';
+function isWest(item) {
+    return exports.reflection.isInstance(item, exports.West);
+}
+exports.isWest = isWest;
 class C4IacAstReflection {
     getAllTypes() {
-        return ['Container', 'Greeting', 'Model', 'Person', 'SoftwareSystem'];
+        return ['Container', 'East', 'Greeting', 'Model', 'North', 'Person', 'RelationShip', 'RelationType', 'SoftwareSystem', 'South', 'West'];
     }
     isInstance(node, type) {
         return (0, langium_1.isAstNode)(node) && this.isSubtype(node.$type, type);
@@ -45,8 +75,10 @@ class C4IacAstReflection {
             return true;
         }
         switch (subtype) {
-            case exports.SoftwareSystem: {
-                return this.isSubtype(exports.Model, supertype);
+            case exports.North:
+            case exports.South:
+            case exports.West: {
+                return this.isSubtype(exports.RelationType, supertype);
             }
             default: {
                 return false;
@@ -59,6 +91,15 @@ class C4IacAstReflection {
             case 'Greeting:person': {
                 return exports.Person;
             }
+            case 'North:person': {
+                return exports.Person;
+            }
+            case 'South:to': {
+                return exports.SoftwareSystem;
+            }
+            case 'West:eastingress': {
+                return exports.East;
+            }
             default: {
                 throw new Error(`${referenceId} is not a valid reference id.`);
             }
@@ -66,12 +107,20 @@ class C4IacAstReflection {
     }
     getTypeMetaData(type) {
         switch (type) {
+            case 'Container': {
+                return {
+                    name: 'Container',
+                    mandatory: [
+                        { name: 'easts', type: 'array' },
+                        { name: 'relationships', type: 'array' }
+                    ]
+                };
+            }
             case 'Model': {
                 return {
                     name: 'Model',
                     mandatory: [
-                        { name: 'greetings', type: 'array' },
-                        { name: 'persons', type: 'array' }
+                        { name: 'greetings', type: 'array' }
                     ]
                 };
             }
@@ -80,7 +129,6 @@ class C4IacAstReflection {
                     name: 'SoftwareSystem',
                     mandatory: [
                         { name: 'containers', type: 'array' },
-                        { name: 'greetings', type: 'array' },
                         { name: 'persons', type: 'array' }
                     ]
                 };

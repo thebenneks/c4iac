@@ -20,33 +20,16 @@ const C4IacGrammar = () => loadedC4IacGrammar !== null && loadedC4IacGrammar !==
         "$type": "Group",
         "elements": [
           {
-            "$type": "Alternatives",
-            "elements": [
-              {
-                "$type": "Assignment",
-                "feature": "persons",
-                "operator": "+=",
-                "terminal": {
-                  "$type": "RuleCall",
-                  "rule": {
-                    "$refText": "Person"
-                  },
-                  "arguments": []
-                }
+            "$type": "Assignment",
+            "feature": "greetings",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$refText": "Greeting"
               },
-              {
-                "$type": "Assignment",
-                "feature": "greetings",
-                "operator": "+=",
-                "terminal": {
-                  "$type": "RuleCall",
-                  "rule": {
-                    "$refText": "Greeting"
-                  },
-                  "arguments": []
-                }
-              }
-            ],
+              "arguments": []
+            },
             "cardinality": "*"
           },
           {
@@ -55,7 +38,7 @@ const C4IacGrammar = () => loadedC4IacGrammar !== null && loadedC4IacGrammar !==
               "$refText": "SoftwareSystem"
             },
             "arguments": [],
-            "cardinality": "?"
+            "cardinality": "+"
           }
         ]
       },
@@ -89,6 +72,10 @@ const C4IacGrammar = () => loadedC4IacGrammar !== null && loadedC4IacGrammar !==
           },
           {
             "$type": "Keyword",
+            "value": "{"
+          },
+          {
+            "$type": "Keyword",
             "value": "description"
           },
           {
@@ -118,6 +105,10 @@ const C4IacGrammar = () => loadedC4IacGrammar !== null && loadedC4IacGrammar !==
               },
               "arguments": []
             }
+          },
+          {
+            "$type": "Keyword",
+            "value": "}"
           }
         ]
       },
@@ -187,6 +178,35 @@ const C4IacGrammar = () => loadedC4IacGrammar !== null && loadedC4IacGrammar !==
             }
           },
           {
+            "$type": "Keyword",
+            "value": "version"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "version",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$refText": "STRING"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "persons",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$refText": "Person"
+              },
+              "arguments": []
+            },
+            "cardinality": "*"
+          },
+          {
             "$type": "Assignment",
             "feature": "containers",
             "operator": "+=",
@@ -197,7 +217,7 @@ const C4IacGrammar = () => loadedC4IacGrammar !== null && loadedC4IacGrammar !==
               },
               "arguments": []
             },
-            "cardinality": "+"
+            "cardinality": "*"
           },
           {
             "$type": "Keyword",
@@ -272,7 +292,456 @@ const C4IacGrammar = () => loadedC4IacGrammar !== null && loadedC4IacGrammar !==
           },
           {
             "$type": "Keyword",
+            "value": "version"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "version",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$refText": "STRING"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "easts",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$refText": "East"
+              },
+              "arguments": []
+            },
+            "cardinality": "+"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "relationships",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$refText": "RelationShip"
+              },
+              "arguments": []
+            },
+            "cardinality": "*"
+          },
+          {
+            "$type": "Keyword",
             "value": "}"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "East",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Keyword",
+            "value": "east"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "name",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$refText": "ID"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Keyword",
+            "value": "port"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "port",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$refText": "INT"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Keyword",
+            "value": "protocol"
+          },
+          {
+            "$type": "Alternatives",
+            "elements": [
+              {
+                "$type": "Keyword",
+                "value": "tcp"
+              },
+              {
+                "$type": "Keyword",
+                "value": "udp"
+              },
+              {
+                "$type": "Keyword",
+                "value": "mcast"
+              }
+            ]
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "RelationShip",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Keyword",
+            "value": "relation"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "name",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$refText": "ID"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Keyword",
+            "value": "{"
+          },
+          {
+            "$type": "Keyword",
+            "value": "description"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "description",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$refText": "STRING"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "relationtype",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$refText": "RelationType"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Keyword",
+            "value": "}"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "RelationType",
+      "definition": {
+        "$type": "Alternatives",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$refText": "North"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$refText": "South"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$refText": "West"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "North",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Keyword",
+            "value": "north"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "name",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$refText": "ID"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Keyword",
+            "value": "port"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "port",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$refText": "INT"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Keyword",
+            "value": "protocol"
+          },
+          {
+            "$type": "Alternatives",
+            "elements": [
+              {
+                "$type": "Keyword",
+                "value": "tcp"
+              },
+              {
+                "$type": "Keyword",
+                "value": "udp"
+              },
+              {
+                "$type": "Keyword",
+                "value": "mcast"
+              }
+            ]
+          },
+          {
+            "$type": "Keyword",
+            "value": "from"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "person",
+            "operator": "=",
+            "terminal": {
+              "$type": "CrossReference",
+              "type": {
+                "$refText": "Person"
+              },
+              "terminal": {
+                "$type": "RuleCall",
+                "rule": {
+                  "$refText": "ID"
+                },
+                "arguments": []
+              },
+              "deprecatedSyntax": false
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "South",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Keyword",
+            "value": "south"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "name",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$refText": "ID"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Keyword",
+            "value": "port"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "port",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$refText": "INT"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Keyword",
+            "value": "protocol"
+          },
+          {
+            "$type": "Alternatives",
+            "elements": [
+              {
+                "$type": "Keyword",
+                "value": "tcp"
+              },
+              {
+                "$type": "Keyword",
+                "value": "udp"
+              },
+              {
+                "$type": "Keyword",
+                "value": "mcast"
+              }
+            ]
+          },
+          {
+            "$type": "Keyword",
+            "value": "to"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "to",
+            "operator": "=",
+            "terminal": {
+              "$type": "CrossReference",
+              "type": {
+                "$refText": "SoftwareSystem"
+              },
+              "terminal": {
+                "$type": "RuleCall",
+                "rule": {
+                  "$refText": "ID"
+                },
+                "arguments": []
+              },
+              "deprecatedSyntax": false
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "West",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Keyword",
+            "value": "west"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "name",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$refText": "ID"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Keyword",
+            "value": "to"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "eastingress",
+            "operator": "=",
+            "terminal": {
+              "$type": "CrossReference",
+              "type": {
+                "$refText": "East"
+              },
+              "terminal": {
+                "$type": "RuleCall",
+                "rule": {
+                  "$refText": "ID"
+                },
+                "arguments": []
+              },
+              "deprecatedSyntax": false
+            }
           }
         ]
       },
