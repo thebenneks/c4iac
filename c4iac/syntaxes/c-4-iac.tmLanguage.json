@@ -10,7 +10,7 @@
     },
     {
       "name": "keyword.control.c-4-iac",
-      "match": "\\b(Hello|person)\\b"
+      "match": "\\b(container|description|Hello|location|person|softwaresystem|technology)\\b"
     },
     {
       "name": "string.quoted.double.c-4-iac",

@@ -1,13 +1,36 @@
 grammar C4Iac
 
 entry Model:
-    (persons+=Person | greetings+=Greeting)*;
+    (persons+=Person | greetings+=Greeting )*
+    SoftwareSystem?
+    ;
 
 Person:
-    'person' name=ID;
+    'person' name=ID 
+    'description' description=STRING
+    'location' location=Location
+    ;
+
+SoftwareSystem:
+    'softwaresystem' name=ID '{' 
+        'description' description=STRING
+        'location' location=Location
+        containers+=Container+
+    '}'
+    ;
+
+Container:
+    'container' name=ID '{'
+       'description' description=STRING 
+       'technology' technology=STRING
+    '}'
+    ;    
 
 Greeting:
     'Hello' person=[Person:ID] '!';
+
+
+terminal Location: 'internal' | 'external';
 
 hidden terminal WS: /\s+/;
 terminal ID: /[_a-zA-Z][\w_]*/;

@@ -4,10 +4,15 @@
  * DO NOT EDIT MANUALLY!
  ******************************************************************************/
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.reflection = exports.C4IacAstReflection = exports.isPerson = exports.Person = exports.isModel = exports.Model = exports.isGreeting = exports.Greeting = void 0;
+exports.reflection = exports.C4IacAstReflection = exports.isSoftwareSystem = exports.SoftwareSystem = exports.isPerson = exports.Person = exports.isModel = exports.Model = exports.isGreeting = exports.Greeting = exports.isContainer = exports.Container = void 0;
 /* eslint-disable @typescript-eslint/array-type */
 /* eslint-disable @typescript-eslint/no-empty-interface */
 const langium_1 = require("langium");
+exports.Container = 'Container';
+function isContainer(item) {
+    return exports.reflection.isInstance(item, exports.Container);
+}
+exports.isContainer = isContainer;
 exports.Greeting = 'Greeting';
 function isGreeting(item) {
     return exports.reflection.isInstance(item, exports.Greeting);
@@ -23,9 +28,14 @@ function isPerson(item) {
     return exports.reflection.isInstance(item, exports.Person);
 }
 exports.isPerson = isPerson;
+exports.SoftwareSystem = 'SoftwareSystem';
+function isSoftwareSystem(item) {
+    return exports.reflection.isInstance(item, exports.SoftwareSystem);
+}
+exports.isSoftwareSystem = isSoftwareSystem;
 class C4IacAstReflection {
     getAllTypes() {
-        return ['Greeting', 'Model', 'Person'];
+        return ['Container', 'Greeting', 'Model', 'Person', 'SoftwareSystem'];
     }
     isInstance(node, type) {
         return (0, langium_1.isAstNode)(node) && this.isSubtype(node.$type, type);
@@ -35,6 +45,9 @@ class C4IacAstReflection {
             return true;
         }
         switch (subtype) {
+            case exports.SoftwareSystem: {
+                return this.isSubtype(exports.Model, supertype);
+            }
             default: {
                 return false;
             }
@@ -57,6 +70,16 @@ class C4IacAstReflection {
                 return {
                     name: 'Model',
                     mandatory: [
+                        { name: 'greetings', type: 'array' },
+                        { name: 'persons', type: 'array' }
+                    ]
+                };
+            }
+            case 'SoftwareSystem': {
+                return {
+                    name: 'SoftwareSystem',
+                    mandatory: [
+                        { name: 'containers', type: 'array' },
                         { name: 'greetings', type: 'array' },
                         { name: 'persons', type: 'array' }
                     ]

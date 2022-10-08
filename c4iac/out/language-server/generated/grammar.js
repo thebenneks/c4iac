@@ -17,34 +17,47 @@ const C4IacGrammar = () => loadedC4IacGrammar !== null && loadedC4IacGrammar !==
       "name": "Model",
       "entry": true,
       "definition": {
-        "$type": "Alternatives",
+        "$type": "Group",
         "elements": [
           {
-            "$type": "Assignment",
-            "feature": "persons",
-            "operator": "+=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$refText": "Person"
+            "$type": "Alternatives",
+            "elements": [
+              {
+                "$type": "Assignment",
+                "feature": "persons",
+                "operator": "+=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$refText": "Person"
+                  },
+                  "arguments": []
+                }
               },
-              "arguments": []
-            }
+              {
+                "$type": "Assignment",
+                "feature": "greetings",
+                "operator": "+=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$refText": "Greeting"
+                  },
+                  "arguments": []
+                }
+              }
+            ],
+            "cardinality": "*"
           },
           {
-            "$type": "Assignment",
-            "feature": "greetings",
-            "operator": "+=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$refText": "Greeting"
-              },
-              "arguments": []
-            }
+            "$type": "RuleCall",
+            "rule": {
+              "$refText": "SoftwareSystem"
+            },
+            "arguments": [],
+            "cardinality": "?"
           }
-        ],
-        "cardinality": "*"
+        ]
       },
       "definesHiddenTokens": false,
       "fragment": false,
@@ -73,6 +86,193 @@ const C4IacGrammar = () => loadedC4IacGrammar !== null && loadedC4IacGrammar !==
               },
               "arguments": []
             }
+          },
+          {
+            "$type": "Keyword",
+            "value": "description"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "description",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$refText": "STRING"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Keyword",
+            "value": "location"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "location",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$refText": "Location"
+              },
+              "arguments": []
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "SoftwareSystem",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Keyword",
+            "value": "softwaresystem"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "name",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$refText": "ID"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Keyword",
+            "value": "{"
+          },
+          {
+            "$type": "Keyword",
+            "value": "description"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "description",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$refText": "STRING"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Keyword",
+            "value": "location"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "location",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$refText": "Location"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "containers",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$refText": "Container"
+              },
+              "arguments": []
+            },
+            "cardinality": "+"
+          },
+          {
+            "$type": "Keyword",
+            "value": "}"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "Container",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Keyword",
+            "value": "container"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "name",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$refText": "ID"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Keyword",
+            "value": "{"
+          },
+          {
+            "$type": "Keyword",
+            "value": "description"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "description",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$refText": "STRING"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Keyword",
+            "value": "technology"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "technology",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$refText": "STRING"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Keyword",
+            "value": "}"
           }
         ]
       },
@@ -124,6 +324,31 @@ const C4IacGrammar = () => loadedC4IacGrammar !== null && loadedC4IacGrammar !==
       "hiddenTokens": [],
       "parameters": [],
       "wildcard": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "Location",
+      "definition": {
+        "$type": "TerminalAlternatives",
+        "elements": [
+          {
+            "$type": "CharacterRange",
+            "left": {
+              "$type": "Keyword",
+              "value": "internal"
+            }
+          },
+          {
+            "$type": "CharacterRange",
+            "left": {
+              "$type": "Keyword",
+              "value": "external"
+            }
+          }
+        ]
+      },
+      "fragment": false,
+      "hidden": false
     },
     {
       "$type": "TerminalRule",

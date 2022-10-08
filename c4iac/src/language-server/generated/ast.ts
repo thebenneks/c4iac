@@ -7,6 +7,19 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
 import { AstNode, AstReflection, Reference, ReferenceInfo, isAstNode, TypeMetaData } from 'langium';
 
+export interface Container extends AstNode {
+    readonly $container: SoftwareSystem;
+    description: string
+    name: string
+    technology: string
+}
+
+export const Container = 'Container';
+
+export function isContainer(item: unknown): item is Container {
+    return reflection.isInstance(item, Container);
+}
+
 export interface Greeting extends AstNode {
     readonly $container: Model;
     person: Reference<Person>
@@ -31,6 +44,8 @@ export function isModel(item: unknown): item is Model {
 
 export interface Person extends AstNode {
     readonly $container: Model;
+    description: string
+    location: string
     name: string
 }
 
@@ -40,12 +55,25 @@ export function isPerson(item: unknown): item is Person {
     return reflection.isInstance(item, Person);
 }
 
-export type C4IacAstType = 'Greeting' | 'Model' | 'Person';
+export interface SoftwareSystem extends Model {
+    containers: Array<Container>
+    description: string
+    location: string
+    name: string
+}
+
+export const SoftwareSystem = 'SoftwareSystem';
+
+export function isSoftwareSystem(item: unknown): item is SoftwareSystem {
+    return reflection.isInstance(item, SoftwareSystem);
+}
+
+export type C4IacAstType = 'Container' | 'Greeting' | 'Model' | 'Person' | 'SoftwareSystem';
 
 export class C4IacAstReflection implements AstReflection {
 
     getAllTypes(): string[] {
-        return ['Greeting', 'Model', 'Person'];
+        return ['Container', 'Greeting', 'Model', 'Person', 'SoftwareSystem'];
     }
 
     isInstance(node: unknown, type: string): boolean {
@@ -57,6 +85,9 @@ export class C4IacAstReflection implements AstReflection {
             return true;
         }
         switch (subtype) {
+            case SoftwareSystem: {
+                return this.isSubtype(Model, supertype);
+            }
             default: {
                 return false;
             }
@@ -81,6 +112,16 @@ export class C4IacAstReflection implements AstReflection {
                 return {
                     name: 'Model',
                     mandatory: [
+                        { name: 'greetings', type: 'array' },
+                        { name: 'persons', type: 'array' }
+                    ]
+                };
+            }
+            case 'SoftwareSystem': {
+                return {
+                    name: 'SoftwareSystem',
+                    mandatory: [
+                        { name: 'containers', type: 'array' },
                         { name: 'greetings', type: 'array' },
                         { name: 'persons', type: 'array' }
                     ]
